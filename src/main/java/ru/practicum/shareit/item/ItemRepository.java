@@ -5,11 +5,11 @@ import ru.practicum.shareit.item.model.Item;
 import java.util.List;
 
 public interface ItemRepository {
-    List<Item> getAllByUserId(Long userId);
+    List<Item> getAllUserItems(Long userId);
 
     Item getById(Long id);
 
-    List<Item> getAllAvailableByParam(String text);
+    List<Item> searchByParam(String text);
 
     Item create(Item item);
 

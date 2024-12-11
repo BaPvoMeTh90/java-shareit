@@ -14,7 +14,7 @@ public class InMemoryItemRepository implements ItemRepository {
 
 
     @Override
-    public List<Item> getAllByUserId(Long userId) {
+    public List<Item> getAllUserItems(Long userId) {
         return items.values().stream().filter(item -> item.getOwner().equals(userId)).toList();
     }
 
@@ -24,7 +24,7 @@ public class InMemoryItemRepository implements ItemRepository {
     }
 
     @Override
-    public List<Item> getAllAvailableByParam(String text) {
+    public List<Item> searchByParam(String text) {
         return items.values().stream()
                 .filter(item -> item.getName().toUpperCase().contains(text.toUpperCase()) || item.getDescription().toUpperCase().contains(text.toUpperCase()))
                 .filter(Item::getAvailable)
