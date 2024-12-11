@@ -19,7 +19,7 @@ public class UserService {
     }
 
     public UserDto getById(Long id) {
-        Validate(id);
+        validate(id);
         return UserMapper.toUserDto(userRepository.getById(id));
     }
 
@@ -28,7 +28,7 @@ public class UserService {
     }
 
     public User update(Long id, User user) {
-        Validate(id);
+        validate(id);
         user.setId(id);
         if (user.getName() == null || user.getName().isBlank()) {
             user.setName(userRepository.getById(id).getName());
@@ -40,11 +40,11 @@ public class UserService {
     }
 
     public void deleteById(Long id) {
-        Validate(id);
+        validate(id);
         userRepository.deleteById(id);
     }
 
-    private void Validate(Long id) {
+    private void validate(Long id) {
         if (userRepository.getById(id) == null) {
             throw new NotFoundException("User с id = " + id + " не найден.");
         }
