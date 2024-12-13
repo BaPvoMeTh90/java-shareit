@@ -21,8 +21,8 @@ public class UserService {
     public UserDto getById(Long id) {
         try {
             return UserMapper.toUserDto(userRepository.getById(id));
-        } catch (NotFoundException e){
-                throw new NotFoundException("User not found");
+        } catch (NotFoundException e) {
+                throw new NotFoundException("Польователь не найден");
         }
     }
 
