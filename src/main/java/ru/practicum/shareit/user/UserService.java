@@ -19,24 +19,31 @@ public class UserService {
     }
 
     public UserDto getById(Long id) {
-        validate(id);
-        return UserMapper.toUserDto(userRepository.getById(id));
+        try {
+            return UserMapper.toUserDto(userRepository.getById(id));
+        } catch (NotFoundException e){
+                throw new NotFoundException("User not found");
+        }
     }
 
-    public User create(User user) {
-        return userRepository.create(user);
+
+    public UserDto create(UserDto userDto) {
+        User user = UserMapper.toUser(userDto);
+        return UserMapper.toUserDto(userRepository.create(user));
     }
 
-    public User update(Long id, User user) {
+    public UserDto update(Long id, UserDto userDto) {
         validate(id);
+        User user = UserMapper.toUser(userDto);
         user.setId(id);
+        User oldUser = userRepository.getById(id);
         if (user.getName() == null || user.getName().isBlank()) {
-            user.setName(userRepository.getById(id).getName());
+            user.setName(oldUser.getName());
         }
         if (user.getEmail() == null || user.getEmail().isBlank()) {
-            user.setEmail(userRepository.getById(id).getEmail());
+            user.setEmail(oldUser.getEmail());
         }
-        return userRepository.update(user);
+        return UserMapper.toUserDto(userRepository.update(user));
     }
 
     public void deleteById(Long id) {

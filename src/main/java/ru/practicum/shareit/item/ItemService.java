@@ -18,12 +18,16 @@ public class ItemService {
     private final UserRepository userRepository;
 
     public List<ItemDto> getAllUserItems(Long userId) {
+        validateUser(userId);
         return itemRepository.getAllUserItems(userId).stream().map(ItemMapper::toItemDto).toList();
     }
 
     public ItemDto getById(Long id) {
-        validateItem(id);
-        return ItemMapper.toItemDto(itemRepository.getById(id));
+        try {
+            return ItemMapper.toItemDto(itemRepository.getById(id));
+        } catch (NotFoundException e) {
+            throw new ValidationException("Item not found");
+        }
     }
 
     public List<ItemDto> searchByParam(String text) {
@@ -40,23 +44,23 @@ public class ItemService {
         return ItemMapper.toItemDto(itemRepository.create(item));
     }
 
-    public Item update(Long userId, Long itemId, Item item) {
+    public ItemDto update(Long userId, Long itemId, ItemDto itemDto) {
         validateItem(itemId);
         validateUser(userId);
         Item theItem = itemRepository.getById(itemId);
         validateOwner(userId, theItem);
-        item.setId(itemId);
+        itemDto.setId(itemId);
 
-        if (item.getName() == null || item.getName().isBlank()) {
-            item.setName(theItem.getName());
+        if (itemDto.getName() != null) {
+            theItem.setName(itemDto.getName());
         }
-        if (item.getDescription() == null || item.getDescription().isBlank()) {
-            item.setDescription(theItem.getDescription());
+        if (itemDto.getDescription() != null) {
+            theItem.setDescription(itemDto.getDescription());
         }
-        if (item.getAvailable() == null) {
-            item.setAvailable(theItem.getAvailable());
+        if (itemDto.getAvailable() != null) {
+            theItem.setAvailable(itemDto.getAvailable());
         }
-        return itemRepository.update(item);
+        return ItemMapper.toItemDto(itemRepository.update(theItem));
     }
 
     public void deleteById(Long userId, Long itemId) {

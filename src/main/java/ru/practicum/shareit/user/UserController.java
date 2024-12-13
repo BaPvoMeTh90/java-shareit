@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PathVariable;
 import ru.practicum.shareit.user.dto.UserDto;
-import ru.practicum.shareit.user.model.User;
 
 import java.util.List;
 
@@ -36,16 +35,16 @@ public class UserController {
     }
 
     @PostMapping
-    public User create(@Valid @RequestBody User user) {
-        log.info("Поступил запрос на создание пользователя.  Body = {}.", user);
-        return userService.create(user);
+    public UserDto create(@Valid @RequestBody UserDto userDto) {
+        log.info("Поступил запрос на создание пользователя.  Body = {}.", userDto);
+        return userService.create(userDto);
     }
 
     @PatchMapping("/{id}")
-    public User update(@PathVariable Long id,
-                       @RequestBody User user) {
-        log.info("Поступил запрос на обновление пользователя с id = {}.Body = {}", id, user);
-        return userService.update(id, user);
+    public UserDto update(@PathVariable Long id,
+                       @RequestBody UserDto userDto) {
+        log.info("Поступил запрос на обновление пользователя с id = {}.Body = {}", id, userDto);
+        return userService.update(id, userDto);
     }
 
     @DeleteMapping("/{id}")

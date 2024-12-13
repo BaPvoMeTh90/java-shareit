@@ -53,11 +53,11 @@ public class ItemController {
     }
 
     @PatchMapping("/{itemId}")
-    public Item update(@RequestHeader("X-Sharer-User-Id") Long userId,
-                       @RequestBody Item item,
+    public ItemDto update(@RequestHeader("X-Sharer-User-Id") Long userId,
+                       @RequestBody ItemDto itemDto,
                        @PathVariable Long itemId) {
-        log.info("Поступил запрос пользователя {} на изменение Вещи с id = {}. Запрос {}", userId, itemId, item);
-        return itemService.update(userId, itemId, item);
+        log.info("Поступил запрос пользователя {} на изменение Вещи с id = {}. Запрос {}", userId, itemId, itemDto);
+        return itemService.update(userId, itemId, itemDto);
     }
 
     @DeleteMapping("/{itemId}")
