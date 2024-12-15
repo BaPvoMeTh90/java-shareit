@@ -3,11 +3,12 @@ package ru.practicum.shareit.item;
 import ru.practicum.shareit.item.model.Item;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ItemRepository {
     List<Item> getAllUserItems(Long userId);
 
-    Item getById(Long id);
+    Optional<Item> getById(Long id);
 
     List<Item> searchByParam(String text);
 

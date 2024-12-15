@@ -5,11 +5,7 @@ import org.springframework.stereotype.Repository;
 import ru.practicum.shareit.exception.DataConflict;
 import ru.practicum.shareit.user.model.User;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.List;
+import java.util.*;
 
 @Repository
 public class InMemoryUserRepository implements UserRepository {
@@ -23,8 +19,8 @@ public class InMemoryUserRepository implements UserRepository {
     }
 
     @Override
-    public User getById(Long id) {
-        return users.get(id);
+    public Optional<User> getById(Long id) {
+        return Optional.ofNullable(users.get(id));
     }
 
     @Override

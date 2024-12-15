@@ -19,13 +19,9 @@ public class UserService {
     }
 
     public UserDto getById(Long id) {
-        try {
-            return UserMapper.toUserDto(userRepository.getById(id));
-        } catch (NotFoundException e) {
-                throw new NotFoundException("Польователь не найден");
-        }
+        var user =  userRepository.getById(id).orElseThrow(() -> new NotFoundException("User not found"));
+        return UserMapper.toUserDto(user);
     }
-
 
     public UserDto create(UserDto userDto) {
         User user = UserMapper.toUser(userDto);
@@ -36,7 +32,7 @@ public class UserService {
         validate(id);
         User user = UserMapper.toUser(userDto);
         user.setId(id);
-        User oldUser = userRepository.getById(id);
+        User oldUser = UserMapper.toUser(getById(id));
         if (user.getName() == null || user.getName().isBlank()) {
             user.setName(oldUser.getName());
         }
@@ -52,7 +48,7 @@ public class UserService {
     }
 
     private void validate(Long id) {
-        if (userRepository.getById(id) == null) {
+        if (userRepository.getById(id).isEmpty()) {
             throw new NotFoundException("User с id = " + id + " не найден.");
         }
     }

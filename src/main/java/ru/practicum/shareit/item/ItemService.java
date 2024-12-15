@@ -8,6 +8,7 @@ import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.dto.ItemMapper;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.UserRepository;
+import ru.practicum.shareit.user.UserService;
 
 import java.util.List;
 
@@ -15,7 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ItemService {
     private final ItemRepository itemRepository;
-    private final UserRepository userRepository;
+    private final UserService userService;
 
     public List<ItemDto> getAllUserItems(Long userId) {
         validateUser(userId);
@@ -23,11 +24,8 @@ public class ItemService {
     }
 
     public ItemDto getById(Long id) {
-        try {
-            return ItemMapper.toItemDto(itemRepository.getById(id));
-        } catch (NotFoundException e) {
-            throw new ValidationException("Item not found");
-        }
+        var item = itemRepository.getById(id).orElseThrow(()-> new NotFoundException("Item отсутствует."));
+        return ItemMapper.toItemDto(item);
     }
 
     public List<ItemDto> searchByParam(String text) {
@@ -47,9 +45,8 @@ public class ItemService {
     public ItemDto update(Long userId, Long itemId, ItemDto itemDto) {
         validateItem(itemId);
         validateUser(userId);
-        Item theItem = itemRepository.getById(itemId);
+        Item theItem = ItemMapper.toItem(getById(itemId));
         validateOwner(userId, theItem);
-        itemDto.setId(itemId);
 
         if (itemDto.getName() != null) {
             theItem.setName(itemDto.getName());
@@ -64,20 +61,16 @@ public class ItemService {
     }
 
     public void deleteById(Long userId, Long itemId) {
-        validateOwner(userId, itemRepository.getById(itemId));
+        validateOwner(userId, ItemMapper.toItem(getById(itemId)));
         itemRepository.deleteById(itemId);
     }
 
     private void validateItem(Long id) {
-        if (itemRepository.getById(id) == null) {
-            throw new NotFoundException("Item с id = " + id + " не найдена.");
-        }
+        getById(id);
     }
 
     private void validateUser(Long id) {
-        if (userRepository.getById(id) == null) {
-            throw new NotFoundException("User с id = " + id + " не найден.");
-        }
+        userService.getById(id);
     }
 
     private void validateOwner(Long userId, Item item) {

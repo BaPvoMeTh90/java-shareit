@@ -6,6 +6,7 @@ import ru.practicum.shareit.item.model.Item;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Repository
 public class InMemoryItemRepository implements ItemRepository {
@@ -19,8 +20,8 @@ public class InMemoryItemRepository implements ItemRepository {
     }
 
     @Override
-    public Item getById(Long id) {
-        return items.get(id);
+    public Optional<Item> getById(Long id) {
+        return Optional.ofNullable(items.get(id));
     }
 
     @Override
@@ -40,12 +41,8 @@ public class InMemoryItemRepository implements ItemRepository {
 
     @Override
     public Item update(Item item) {
-        Item theItem = items.get(item.getId());
-        theItem.setName(item.getName());
-        theItem.setDescription(item.getDescription());
-        theItem.setAvailable(item.getAvailable());
-        items.put(item.getId(), theItem);
-        return theItem;
+        items.put(item.getId(), item);
+        return item;
     }
 
     @Override
