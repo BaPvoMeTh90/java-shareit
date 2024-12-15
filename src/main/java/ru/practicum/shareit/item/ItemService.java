@@ -7,7 +7,6 @@ import ru.practicum.shareit.exception.ValidationException;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.dto.ItemMapper;
 import ru.practicum.shareit.item.model.Item;
-import ru.practicum.shareit.user.UserRepository;
 import ru.practicum.shareit.user.UserService;
 
 import java.util.List;
@@ -24,7 +23,7 @@ public class ItemService {
     }
 
     public ItemDto getById(Long id) {
-        var item = itemRepository.getById(id).orElseThrow(()-> new NotFoundException("Item отсутствует."));
+        var item = itemRepository.getById(id).orElseThrow(() -> new NotFoundException("Item отсутствует."));
         return ItemMapper.toItemDto(item);
     }
 
