@@ -4,21 +4,31 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import ru.practicum.shareit.user.model.User;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class UserMapper {
-    public static UserDto toUserDto(User user) {
-        UserDto userDto = new UserDto();
-        userDto.setId(user.getId());
-        userDto.setName(user.getName());
-        userDto.setEmail(user.getEmail());
-        return userDto;
+    public static UserOutputDto toUserOutputDto(User user) {
+        UserOutputDto userOutputDto = new UserOutputDto();
+        userOutputDto.setId(user.getId());
+        userOutputDto.setName(user.getName());
+        userOutputDto.setEmail(user.getEmail());
+        return userOutputDto;
     }
 
-    public static User toUser(UserDto userDto) {
+    public static List<UserOutputDto> toUserOutputDto(Iterable<User> users) {
+        List<UserOutputDto> result = new ArrayList<>();
+        for (User user : users) {
+            result.add(toUserOutputDto(user));
+        }
+        return result;
+    }
+
+    public static User toUser(UserInputDto userInputDto) {
         User user = new User();
-        user.setId(userDto.getId());
-        user.setName(userDto.getName());
-        user.setEmail(userDto.getEmail());
+        user.setName(userInputDto.getName());
+        user.setEmail(userInputDto.getEmail());
         return user;
     }
 }

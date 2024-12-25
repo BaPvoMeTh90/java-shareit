@@ -1,35 +1,27 @@
-package ru.practicum.shareit.item.model;
+package ru.practicum.shareit.item.dto;
 
-import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import ru.practicum.shareit.request.model.ItemRequest;
 
-@Entity
-@Table(name = "ITEMS", schema = "public")
 @Getter
 @Setter
-public class Item {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @Column(name = "NAME")
+public class ItemInputDto {
+    @NotBlank
     private String name;
-    @Column(name = "DESCRIPTION")
+    @NotBlank
     private String description;
-    @Column(name = "IS_AVAILABLE")
+    @NotNull
     private Boolean available;
-    @Column(name = "OWNER_ID")
     private Long owner;
-    @OneToOne
-    @JoinColumn(name = "REQUEST_ID")
     private ItemRequest request;
 
     @Override
     public String toString() {
-        return "Item{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
+        return "ItemInputDto{" +
+                "name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", available=" + available +
                 ", owner=" + owner +
