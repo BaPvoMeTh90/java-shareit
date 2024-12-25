@@ -152,7 +152,7 @@ public class BookingService {
 
     private void validateItemsOwner(Long userId, Long itemId) {
         if (!itemRepository.findById(itemId).get().getOwner().equals(userId)) {
-            throw new ValidationException("Пользователь c ID = " + userId + " не имеет права на предмет c ID = " + itemId );
+            throw new ValidationException("Пользователь c ID = " + userId + " не имеет права на предмет c ID = " + itemId);
         }
     }
 
