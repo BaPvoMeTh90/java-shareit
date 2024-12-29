@@ -38,8 +38,8 @@ public class BookingController {
     public BookingOutputDto updateBookingStatus(@RequestHeader("X-Sharer-User-Id") Long userId,
                                                 @PathVariable Long bookingId,
                                                 @RequestParam Boolean approved) {
-        log.info("Поступил запрос пользователь с id = {} на изменение статуса вещи с id = {} на букинг {}"
-                , userId, bookingId, approved);
+        log.info("Поступил запрос пользователь с id = {} на изменение статуса вещи с id = {} на букинг {}",
+                userId, bookingId, approved);
         return bookingService.updateBookingStatus(bookingId, userId, approved);
     }
 
