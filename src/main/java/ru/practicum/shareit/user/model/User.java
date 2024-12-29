@@ -21,13 +21,4 @@ public class User {
     private String name;
     @Column(name = "EMAIL")
     private String email;
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                '}';
-    }
 }

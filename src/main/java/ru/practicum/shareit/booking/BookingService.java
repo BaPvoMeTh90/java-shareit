@@ -1,7 +1,5 @@
 package ru.practicum.shareit.booking;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -27,21 +25,15 @@ import java.util.List;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class BookingService {
-    private static final Logger log = LoggerFactory.getLogger(BookingService.class);
     private final BookingRepository bookingRepository;
     private final UserRepository userRepository;
     private final ItemRepository itemRepository;
-
-//    public List<BookingOutputDto> getAll() {
-//        return BookingMapper.toBookingOutputDto(bookingRepository.findAll());
-//    }
 
     public BookingOutputDto getById(Long bookingId, Long userId) {
         validateUser(userId);
         var booking = bookingRepository.findById(bookingId)
                 .orElseThrow(() -> new NotFoundException("Букинга с id = " + bookingId + " не существует"));
         validateRelationForBooking(booking, userId);
-        log.info("В DB добавлен букинг" + booking);
         return BookingMapper.toBookingOutputDto(booking);
     }
 

@@ -26,14 +26,4 @@ public class ItemRequest {
     @Column(name = "CREATED")
     @NotNull
     private Instant created;
-
-    @Override
-    public String toString() {
-        return "ItemRequest{" +
-                "id=" + id +
-                ", description='" + description + '\'' +
-                ", requestor=" + requestor +
-                ", created=" + created +
-                '}';
-    }
 }

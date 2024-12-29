@@ -1,6 +1,16 @@
 package ru.practicum.shareit.booking.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.EnumType;
 import lombok.Getter;
 import lombok.Setter;
 import ru.practicum.shareit.item.model.Item;
@@ -29,16 +39,4 @@ public class Booking {
     @Column(name = "STATUS")
     @Enumerated(EnumType.STRING)
     private Status status = Status.WAITING;
-
-    @Override
-    public String toString() {
-        return "Booking{" +
-                "id=" + id +
-                ", start=" + start +
-                ", end=" + end +
-                ", item=" + item +
-                ", booker=" + booker +
-                ", status=" + status +
-                '}';
-    }
 }

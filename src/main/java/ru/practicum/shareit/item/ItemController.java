@@ -18,6 +18,7 @@ import ru.practicum.shareit.item.dto.CommentOutputDto;
 import ru.practicum.shareit.item.dto.ItemInputDto;
 import ru.practicum.shareit.item.dto.ItemOutputDto;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -36,7 +37,7 @@ public class ItemController {
 
     @GetMapping("/{id}")
     public ItemOutputDto getById(@PathVariable Long id) {
-        log.info("Поступил запрос на получение вещи с id = {}", id);
+        log.info("Поступил запрос в {}, на получение вещи с id = {}", LocalDateTime.now(), id);
         return itemService.getById(id);
     }
 

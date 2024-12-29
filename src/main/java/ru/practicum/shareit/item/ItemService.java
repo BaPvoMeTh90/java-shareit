@@ -2,20 +2,28 @@ package ru.practicum.shareit.item;
 
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.booking.BookingRepository;
 import ru.practicum.shareit.booking.model.Status;
 import ru.practicum.shareit.booking.model.Booking;
 import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.exception.ValidationException;
-import ru.practicum.shareit.item.dto.*;
+import ru.practicum.shareit.item.dto.CommentOutputDto;
+import ru.practicum.shareit.item.dto.ItemInputDto;
+import ru.practicum.shareit.item.dto.ItemMapper;
+import ru.practicum.shareit.item.dto.ItemOutputDto;
+import ru.practicum.shareit.item.dto.CommentInputDto;
+import ru.practicum.shareit.item.dto.CommentMapper;
 import ru.practicum.shareit.item.model.Comment;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.UserRepository;
+import ru.practicum.shareit.user.model.User;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -28,15 +36,56 @@ public class ItemService {
 
     public List<ItemOutputDto> getAllUserItems(Long userId) {
         validateUser(userId);
-        return ItemMapper.toItemOutputDto(itemRepository.findByOwner(userId));
+        List<Comment> comments = commentRepository.findAll();
+        List<Booking> bookings = bookingRepository.findAll();
+        List<ItemOutputDto> items = ItemMapper.toItemOutputDto(itemRepository.findByOwner(userId));
+        for (ItemOutputDto item : items) {
+            item.setComments(comments.stream()
+                    .filter(comment -> comment.getItem().getId().equals(item.getId()))
+                    .sorted((c1, c2) -> c2.getCreated().compareTo(c1.getCreated()))
+                    .collect(Collectors.toList()));
+            Booking nextBooking = bookings.stream()
+                    .filter(booking -> Objects.equals(booking.getItem().getId(), item.getId())
+                            && booking.getStatus() == Status.APPROVED)
+                    .filter(booking -> booking.getStart().isAfter(LocalDateTime.now()))
+                    .min(Comparator.comparing(Booking::getStart))
+                    .orElse(null);
+            if (nextBooking != null && !nextBooking.getStatus().equals(Status.APPROVED)) {
+                nextBooking = null;
+            }
+            Booking lastBooking = bookings.stream()
+                    .filter(booking -> booking.getStart().isBefore(LocalDateTime.now())
+                            && Objects.equals(booking.getItem().getId(), item.getId())
+                            && booking.getStatus() == Status.APPROVED)
+                    .max(Comparator.comparing(Booking::getEnd))
+                    .orElse(null);
+            if (lastBooking != null && !lastBooking.getStatus().equals(Status.APPROVED)) {
+                lastBooking = null;
+            }
+            item.setLastBooking(lastBooking);
+            item.setNextBooking(nextBooking);
+        }
+        return items;
     }
 
     public ItemOutputDto getById(Long id) {
-        var item = itemRepository.findById(id).orElseThrow(() -> new NotFoundException("Item отсутствует."));
-        Sort sort = Sort.by(Sort.Direction.DESC, "start");
-        List<Booking> bookings = bookingRepository.findByItemIdAndStatus(id, Status.APPROVED, sort);
-        List<Comment> comments = commentRepository.findByItemId(id);
-        return ItemMapper.toDetailedItemOutputDto(item, bookings, comments);
+        ItemOutputDto output = ItemMapper.toItemOutputDto(itemRepository.findById(id).orElseThrow(() -> new NotFoundException("Item отсутствует.")));
+        output.setComments(commentRepository.findByItemId(id).stream()
+                .sorted((c1, c2) -> c2.getCreated().compareTo(c1.getCreated()))
+                .toList());
+        Booking lastBooking = bookingRepository
+                .getFirstByItemIdAndEndBeforeOrderByEndDesc(id, LocalDateTime.now()).orElse(null);
+        if (lastBooking != null && !lastBooking.getStatus().equals(Status.APPROVED)) {
+            lastBooking = null;
+        }
+        Booking nextBooking = bookingRepository
+                .getTopByItemIdAndStartAfterOrderByStartAsc(id, LocalDateTime.now()).orElse(null);
+        if (nextBooking != null && !nextBooking.getStatus().equals(Status.APPROVED)) {
+            nextBooking = null;
+        }
+        output.setNextBooking(nextBooking);
+        output.setLastBooking(lastBooking);
+        return output;
     }
 
     public List<ItemOutputDto> searchByParam(String text) {
@@ -79,11 +128,10 @@ public class ItemService {
         itemRepository.deleteById(itemId);
     }
 
-
     @Transactional
     public CommentOutputDto createComment(Long userId, Long itemId, CommentInputDto commentInputDto) {
-        var item = itemRepository.findById(itemId).orElseThrow(() -> new NotFoundException("Item отсутствует."));
-        var user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException("User отсутствует."));
+        var item = validateItem(itemId);
+        var user = validateUser(userId);
         if (bookingRepository.findByBookerIdAndItemIdAndEndIsBefore(userId, itemId, LocalDateTime.now()).isEmpty()) {
             throw new ValidationException("Завершенный букинг вещи с id = " + item.getId() +  " пользователем с id = "
                     + userId + " не найден. Комментарий доступен по завершенному букингу.");
@@ -94,12 +142,12 @@ public class ItemService {
         return CommentMapper.toCommentOutputDto(commentRepository.save(comment));
     }
 
-    private void validateItem(Long id) {
-        getById(id);
+    private Item validateItem(Long id) {
+        return itemRepository.findById(id).orElseThrow(() -> new NotFoundException("Item отсутствует."));
     }
 
-    private void validateUser(Long id) {
-        userRepository.findById(id).orElseThrow(() -> new NotFoundException("User отсутствует."));
+    private User validateUser(Long id) {
+        return userRepository.findById(id).orElseThrow(() -> new NotFoundException("User отсутствует."));
     }
 
     private void validateOwner(Long userId, Item item) {
