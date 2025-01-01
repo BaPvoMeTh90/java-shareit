@@ -4,8 +4,6 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.booking.BookingRepository;
-import ru.practicum.shareit.booking.model.Status;
-import ru.practicum.shareit.booking.model.Booking;
 import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.exception.ValidationException;
 import ru.practicum.shareit.item.dto.CommentOutputDto;
@@ -20,9 +18,7 @@ import ru.practicum.shareit.user.UserRepository;
 import ru.practicum.shareit.user.model.User;
 
 import java.time.LocalDateTime;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -37,33 +33,12 @@ public class ItemService {
     public List<ItemOutputDto> getAllUserItems(Long userId) {
         validateUser(userId);
         List<Comment> comments = commentRepository.findAll();
-        List<Booking> bookings = bookingRepository.findAll();
-        List<ItemOutputDto> items = ItemMapper.toItemOutputDto(itemRepository.findByOwner(userId));
+          List<ItemOutputDto> items = ItemMapper.toItemOutputDto(itemRepository.findByOwner(userId));
         for (ItemOutputDto item : items) {
             item.setComments(comments.stream()
                     .filter(comment -> comment.getItem().getId().equals(item.getId()))
                     .sorted((c1, c2) -> c2.getCreated().compareTo(c1.getCreated()))
                     .collect(Collectors.toList()));
-            Booking nextBooking = bookings.stream()
-                    .filter(booking -> Objects.equals(booking.getItem().getId(), item.getId())
-                            && booking.getStatus() == Status.APPROVED)
-                    .filter(booking -> booking.getStart().isAfter(LocalDateTime.now()))
-                    .min(Comparator.comparing(Booking::getStart))
-                    .orElse(null);
-            if (nextBooking != null && !nextBooking.getStatus().equals(Status.APPROVED)) {
-                nextBooking = null;
-            }
-            Booking lastBooking = bookings.stream()
-                    .filter(booking -> booking.getStart().isBefore(LocalDateTime.now())
-                            && Objects.equals(booking.getItem().getId(), item.getId())
-                            && booking.getStatus() == Status.APPROVED)
-                    .max(Comparator.comparing(Booking::getEnd))
-                    .orElse(null);
-            if (lastBooking != null && !lastBooking.getStatus().equals(Status.APPROVED)) {
-                lastBooking = null;
-            }
-            item.setLastBooking(lastBooking);
-            item.setNextBooking(nextBooking);
         }
         return items;
     }
@@ -73,18 +48,6 @@ public class ItemService {
         output.setComments(commentRepository.findByItemId(id).stream()
                 .sorted((c1, c2) -> c2.getCreated().compareTo(c1.getCreated()))
                 .toList());
-        Booking lastBooking = bookingRepository
-                .getFirstByItemIdAndEndBeforeOrderByEndDesc(id, LocalDateTime.now()).orElse(null);
-        if (lastBooking != null && !lastBooking.getStatus().equals(Status.APPROVED)) {
-            lastBooking = null;
-        }
-        Booking nextBooking = bookingRepository
-                .getTopByItemIdAndStartAfterOrderByStartAsc(id, LocalDateTime.now()).orElse(null);
-        if (nextBooking != null && !nextBooking.getStatus().equals(Status.APPROVED)) {
-            nextBooking = null;
-        }
-        output.setNextBooking(nextBooking);
-        output.setLastBooking(lastBooking);
         return output;
     }
 

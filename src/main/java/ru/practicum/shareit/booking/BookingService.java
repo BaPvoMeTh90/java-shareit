@@ -41,6 +41,7 @@ public class BookingService {
     public BookingOutputDto create(BookingInputDto bookingInputDto, Long userId) {
         User user = validateUser(userId);
         Item item = validateItem(bookingInputDto.getItemId());
+//        validateItemsOwner(userId, item.getId());
         if (!item.getAvailable()) {
             throw new ValidationException("Вещь с id = " + item.getId() + " не доступна к бронированию");
         }

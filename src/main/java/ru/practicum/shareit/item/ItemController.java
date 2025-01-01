@@ -37,7 +37,7 @@ public class ItemController {
 
     @GetMapping("/{id}")
     public ItemOutputDto getById(@PathVariable Long id) {
-        log.info("Поступил запрос в {}, на получение вещи с id = {}", LocalDateTime.now(), id);
+        log.info("Поступил запрос на получение вещи с id = {}", id);
         return itemService.getById(id);
     }
 
