@@ -18,7 +18,6 @@ import ru.practicum.shareit.item.dto.CommentOutputDto;
 import ru.practicum.shareit.item.dto.ItemInputDto;
 import ru.practicum.shareit.item.dto.ItemOutputDto;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
