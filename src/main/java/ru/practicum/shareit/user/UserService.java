@@ -31,7 +31,6 @@ public class UserService {
     @Transactional
     public UserOutputDto save(UserInputDto userInputDto) {
         User user = UserMapper.toUser(userInputDto);
-        validateUserByEmail(user);
         return UserMapper.toUserOutputDto(userRepository.save(user));
     }
 
@@ -41,7 +40,6 @@ public class UserService {
         User user = UserMapper.toUser(userInputDto);
         user.setId(id);
         User oldUser = userRepository.findById(id).get();
-        validateUserByEmail(user);
         if (user.getName() == null || user.getName().isBlank()) {
             user.setName(oldUser.getName());
         }
@@ -60,12 +58,6 @@ public class UserService {
     private void validate(Long id) {
         if (userRepository.findById(id).isEmpty()) {
             throw new NotFoundException("User с id = " + id + " не найден.");
-        }
-    }
-
-    private void validateUserByEmail(User user) {
-        if (userRepository.existsByEmail(user.getEmail())) {
-            throw new DataConflict("Пользователь с email = " + user.getEmail() + " уже существует");
         }
     }
 }

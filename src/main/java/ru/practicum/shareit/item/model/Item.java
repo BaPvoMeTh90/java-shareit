@@ -31,16 +31,4 @@ public class Item {
     @OneToOne
     @JoinColumn(name = "REQUEST_ID")
     private ItemRequest request;
-
-    @Override
-    public String toString() {
-        return "Item{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", available=" + available +
-                ", owner=" + owner +
-                ", request=" + request +
-                '}';
-    }
 }
