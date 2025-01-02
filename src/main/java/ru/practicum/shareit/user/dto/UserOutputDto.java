@@ -6,7 +6,7 @@ import jakarta.validation.constraints.Positive;
 import lombok.Data;
 
 @Data
-public class UserDto {
+public class UserOutputDto {
     @Positive
     private Long id;
     @NotBlank

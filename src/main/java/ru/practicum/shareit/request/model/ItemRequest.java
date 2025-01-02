@@ -1,5 +1,6 @@
-package ru.practicum.shareit.request;
+package ru.practicum.shareit.request.model;
 
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -10,13 +11,19 @@ import java.time.Instant;
 
 @Getter
 @Setter
+@Entity
+@Table(name = "REQUESTS", schema = "public")
 public class ItemRequest {
-    @Positive
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "DESCRIPTION")
     @NotBlank
     private String description;
+    @Column(name = "REQUESTOR_ID")
     @Positive
     private Long requestor;
+    @Column(name = "CREATED")
     @NotNull
     private Instant created;
 }
