@@ -6,11 +6,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.Column;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.JoinColumn;
 import lombok.Getter;
 import lombok.Setter;
-import ru.practicum.shareit.request.model.ItemRequest;
 
 @Entity
 @Table(name = "ITEMS", schema = "public")

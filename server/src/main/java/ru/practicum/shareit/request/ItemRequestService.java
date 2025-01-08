@@ -7,7 +7,6 @@ import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.item.ItemRepository;
 import ru.practicum.shareit.item.dto.ItemMapper;
 import ru.practicum.shareit.item.dto.ItemOutputDto;
-import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.request.dto.ItemRequestInputDto;
 import ru.practicum.shareit.request.dto.ItemRequestMapper;
 import ru.practicum.shareit.request.dto.ItemRequestOutputDto;
@@ -40,9 +39,6 @@ public class ItemRequestService {
     public List<ItemRequestOutputDto> getAllUsersItemRequests(Long userId) {
         validateUser(userId);
         List<ItemRequest> itemRequests = itemRequestRepository.findByRequestorOrderByCreatedDesc(userId);
-//        for (ItemRequest itemRequest : itemRequests) {
-//            itemRequest.setItems(itemRepository.findByRequestId(itemRequest.getId()));
-//        }
         return itemRequests.stream()
                 .map(ItemRequestMapper::toItemRequestOutputDto)
                 .toList();
@@ -51,11 +47,6 @@ public class ItemRequestService {
     public ItemRequestOutputDto getDetailedItemRequest(Long requestId) {
         ItemRequest itemRequest = validateItemRequest(requestId);
         ItemRequestOutputDto res = ItemRequestMapper.toItemRequestOutputDto(itemRequest);
-//        res.setItems(ItemMapper.toItemOutputDto(itemRepository.findByRequestId(requestId)));
-//                List<ItemOutputDto> list = itemRequest.getItems().stream()
-//                .map(item -> ItemMapper.toItemOutputDto(itemRepository.findById(item).get()))
-//                .toList();
-//        res.setItems(list);
         List<ItemOutputDto> list = itemRepository.findByRequest(requestId).stream()
                 .map(ItemMapper::toItemOutputDto)
                 .toList();

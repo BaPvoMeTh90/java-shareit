@@ -4,7 +4,6 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import ru.practicum.shareit.request.model.ItemRequest;
 
-import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ItemRequestMapper {
