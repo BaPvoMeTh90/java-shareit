@@ -24,20 +24,21 @@ public class ItemRequestController {
     }
 
     @GetMapping
-    public ResponseEntity<Object> getAllDetailedByUser(@RequestHeader("X-Sharer-User-Id") Long userId) {
+    public ResponseEntity<Object> getAllUsersItemRequests(@RequestHeader("X-Sharer-User-Id") Long userId) {
         log.info("Поступил запрос пользователя с id = {} на получение списка своих запросов вместе с данными об ответах на них.", userId);
-        return itemRequestClient.getAllDetailedByUser(userId);
+        return itemRequestClient.getAllUsersItemRequests(userId);
     }
 
     @GetMapping("/all")
-    public ResponseEntity<Object> getAll() {
+    public ResponseEntity<Object> getAll(@RequestHeader("X-Sharer-User-Id") Long userId) {
         log.info("Поступил запрос на получение списка запросов вещей");
-        return itemRequestClient.getAll();
+        return itemRequestClient.getAll(userId);
     }
 
     @GetMapping("/{requestId}")
-    public ResponseEntity<Object> getDetailedById(@PathVariable Long requestId) {
+    public ResponseEntity<Object> getDetailedById(@PathVariable Long requestId,
+                                                  @RequestHeader("X-Sharer-User-Id") Long userId) {
         log.info("Поступил запрос на получение ItemRequest c id = {}", requestId);
-        return itemRequestClient.getOneDetailedById(requestId);
+        return itemRequestClient.getOneDetailedById(requestId, userId);
     }
 }

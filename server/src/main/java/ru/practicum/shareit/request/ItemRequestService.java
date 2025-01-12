@@ -31,17 +31,25 @@ public class ItemRequestService {
     }
 
     public List<ItemRequestOutputDto> getAll() {
-        return itemRequestRepository.findAllByOrderByCreatedDesc().stream()
+        List<ItemRequestOutputDto> res = itemRequestRepository.findAllByOrderByCreatedDesc().stream()
                 .map(ItemRequestMapper::toItemRequestOutputDto)
                 .toList();
+        for (ItemRequestOutputDto itemRequest : res) {
+            itemRequest.setItems(itemRepository.findByRequest(itemRequest.getId())
+                    .stream().map(ItemMapper::toItemOutputDto).toList());
+        }
+        return res;
     }
 
     public List<ItemRequestOutputDto> getAllUsersItemRequests(Long userId) {
         validateUser(userId);
-        List<ItemRequest> itemRequests = itemRequestRepository.findByRequestorOrderByCreatedDesc(userId);
-        return itemRequests.stream()
-                .map(ItemRequestMapper::toItemRequestOutputDto)
-                .toList();
+        List<ItemRequestOutputDto> itemRequests = itemRequestRepository.findByRequestorOrderByCreatedDesc(userId)
+                .stream().map(ItemRequestMapper::toItemRequestOutputDto).toList();
+        for (ItemRequestOutputDto itemRequest : itemRequests) {
+            itemRequest.setItems(itemRepository.findByRequest(itemRequest.getId())
+                    .stream().map(ItemMapper::toItemOutputDto).toList());
+        }
+        return itemRequests;
     }
 
     public ItemRequestOutputDto getDetailedItemRequest(Long requestId) {
@@ -50,7 +58,6 @@ public class ItemRequestService {
         List<ItemOutputDto> list = itemRepository.findByRequest(requestId).stream()
                 .map(ItemMapper::toItemOutputDto)
                 .toList();
-        System.out.println(list);
         res.setItems(list);
         return res;
     }

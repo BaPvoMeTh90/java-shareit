@@ -14,5 +14,5 @@ public class ItemInputDto {
     @NotNull
     private Boolean available;
     private Long owner;
-    private ItemRequestInputDto request;
+    private Long requestId;
 }

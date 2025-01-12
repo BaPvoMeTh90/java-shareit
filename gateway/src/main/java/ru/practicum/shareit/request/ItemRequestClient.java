@@ -28,16 +28,16 @@ public class ItemRequestClient extends BaseClient {
         return post("", userId, itemRequestInputDto);
     }
 
-    public ResponseEntity<Object> getAllDetailedByUser(Long userId) {
+    public ResponseEntity<Object> getAllUsersItemRequests(Long userId) {
         return get("", userId);
     }
 
-    public ResponseEntity<Object> getAll() {
-        return get("");
+    public ResponseEntity<Object> getAll(Long userId) {
+        return get("", userId);
     }
 
-    public ResponseEntity<Object> getOneDetailedById(Long requestId) {
-        return get("/" + requestId);
+    public ResponseEntity<Object> getOneDetailedById(Long requestId, Long userId) {
+        return get("/" + requestId, userId);
     }
 
 }
