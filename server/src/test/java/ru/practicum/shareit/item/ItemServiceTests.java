@@ -59,7 +59,7 @@ public class ItemServiceTests {
     private Long itemRequestId;
 
     @BeforeEach
-    void BeforeEach() {
+    void beforeEach() {
         User user = new User();
         user.setName("Test User");
         user.setEmail("test@example.com");
@@ -94,7 +94,7 @@ public class ItemServiceTests {
     }
 
     @Test
-    void getAllUserItems() {
+    void ShouldGetAllUserItems() {
         List<ItemOutputDto> items = itemService.getAllUserItems(userId);
         assertFalse(items.isEmpty());
         assertEquals(1, items.size());
@@ -102,7 +102,7 @@ public class ItemServiceTests {
     }
 
     @Test
-    void getById() {
+    void ShouldGetById() {
         ItemOutputDto item = itemService.getById(itemId);
         assertNotNull(item);
         assertEquals(itemOutputDto.getId(), item.getId());
@@ -112,7 +112,7 @@ public class ItemServiceTests {
     }
 
     @Test
-    void searchByParam() {
+    void ShouldSearchByParam() {
         List<ItemOutputDto> items = itemService.searchByParam("Text");
         assertFalse(items.isEmpty());
         assertEquals(1, items.size());
@@ -120,7 +120,7 @@ public class ItemServiceTests {
     }
 
     @Test
-    void create() {
+    void ShouldCreateItem() {
         ItemOutputDto itemOutputDto = itemService.create(userId, itemInputDto);
         assertNotNull(itemOutputDto);
         assertEquals(itemInputDto.getName(), itemOutputDto.getName());
@@ -129,7 +129,7 @@ public class ItemServiceTests {
     }
 
     @Test
-    void update() {
+    void ShouldUpdateItem() {
         ItemInputDto updatedItemInputDto = new ItemInputDto();
         updatedItemInputDto.setName("Updated Name");
         updatedItemInputDto.setDescription("Updated Description");
@@ -142,13 +142,13 @@ public class ItemServiceTests {
     }
 
     @Test
-    void deleteById() {
+    void ShouldDeleteById() {
         itemService.deleteById(userId, itemId);
         assertThrows(NotFoundException.class, () -> itemService.getById(itemId));
     }
 
     @Test
-    void createComment() {
+    void ShouldCreateComment() {
         CommentOutputDto comment = itemService.createComment(userId, itemId, commentInputDto);
         assertNotNull(comment);
         assertEquals(commentInputDto.getText(), comment.getText());

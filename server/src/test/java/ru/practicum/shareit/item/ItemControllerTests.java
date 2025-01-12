@@ -47,7 +47,6 @@ public class ItemControllerTests {
     private ItemService itemService;
 
     private ItemInputDto itemInputDto;
-    private ItemInputDto secondItemInputDto;
     private ItemOutputDto itemOutputDto;
     private ItemOutputDto secondItemOutputDto;
     private CommentInputDto commentInputDto;
@@ -55,13 +54,13 @@ public class ItemControllerTests {
     private Long Id = 1L;
 
     @BeforeEach
-    void BeforeEach() {
+    void beforeEach() {
         itemInputDto = new ItemInputDto();
         itemInputDto.setName("Test Item");
         itemInputDto.setDescription("Test Description");
         itemInputDto.setAvailable(true);
 
-        secondItemInputDto = new ItemInputDto();
+        ItemInputDto secondItemInputDto = new ItemInputDto();
         secondItemInputDto.setName("Test2 Item");
         secondItemInputDto.setDescription("Test2 Description");
         secondItemInputDto.setAvailable(true);
@@ -87,7 +86,7 @@ public class ItemControllerTests {
     }
 
     @Test
-    void getAllUserItems() throws Exception {
+    void ShouldGetAllUserItems() throws Exception {
         when(itemService.getAllUserItems(anyLong())).thenReturn(List.of(itemOutputDto, secondItemOutputDto));
         mockMvc.perform(get("/items")
                         .characterEncoding(StandardCharsets.UTF_8)
@@ -108,7 +107,7 @@ public class ItemControllerTests {
     }
 
     @Test
-    void getById() throws Exception {
+    void ShouldGetById() throws Exception {
         when(itemService.getById(anyLong())).thenReturn(itemOutputDto);
         mockMvc.perform(get("/items/" + Id)
                         .characterEncoding(StandardCharsets.UTF_8)
@@ -124,7 +123,7 @@ public class ItemControllerTests {
     }
 
     @Test
-    void searchByParam() throws Exception {
+    void ShouldSearchByParam() throws Exception {
         when(itemService.searchByParam(anyString())).thenReturn(List.of(secondItemOutputDto));
 
         mockMvc.perform(get("/items/search")
@@ -143,7 +142,7 @@ public class ItemControllerTests {
     }
 
     @Test
-    void create() throws Exception {
+    void ShouldCreateItem() throws Exception {
         when(itemService.create(anyLong(), any(ItemInputDto.class))).thenReturn(itemOutputDto);
 
         mockMvc.perform(post("/items")
@@ -161,7 +160,7 @@ public class ItemControllerTests {
     }
 
     @Test
-    void update()throws Exception {
+    void ShouldUpdateItem()throws Exception {
         when(itemService.update(anyLong(), anyLong(), any(ItemInputDto.class))).thenReturn(itemOutputDto);
         mockMvc.perform(patch("/items/" + Id)
                         .content(objectMapper.writeValueAsString(itemInputDto))
@@ -178,7 +177,7 @@ public class ItemControllerTests {
     }
 
     @Test
-    void deleteById() throws Exception {
+    void ShouldDeleteById() throws Exception {
         mockMvc.perform(delete("/items/" + Id)
                 .characterEncoding(StandardCharsets.UTF_8)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -188,7 +187,7 @@ public class ItemControllerTests {
     }
 
     @Test
-    void testCreate() throws Exception {
+    void ShouldCreateComment() throws Exception {
         when(itemService.createComment(anyLong(), anyLong(), any(CommentInputDto.class))).thenReturn(commentOutputDto);
         mockMvc.perform(post("/items/" + Id + "/comment")
                         .content(objectMapper.writeValueAsString(commentInputDto))

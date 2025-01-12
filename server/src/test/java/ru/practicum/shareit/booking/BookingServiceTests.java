@@ -51,7 +51,7 @@ public class BookingServiceTests {
     private UserService userService;
 
     @BeforeEach
-    void BeforeEach() {
+    void beforeEach() {
         User user = new User();
         user.setName("Test Name");
         user.setEmail("test@test.com");
@@ -82,7 +82,7 @@ public class BookingServiceTests {
 
 
     @Test
-    void getById() {
+    void ShouldGetById() {
         BookingOutputDto createdBooking = bookingService.create(bookingInputDto, userId);
         BookingOutputDto repositoryBooking = bookingService.getById(createdBooking.getId(), userId);
         assertNotNull(repositoryBooking);
@@ -90,7 +90,7 @@ public class BookingServiceTests {
     }
 
     @Test
-    void create() {
+    void ShouldCreateBooking() {
         BookingOutputDto createdBooking = bookingService.create(bookingInputDto, userId);
         assertNotNull(createdBooking);
         assertEquals(bookingInputDto.getStart(), createdBooking.getStart());
@@ -100,14 +100,14 @@ public class BookingServiceTests {
     }
 
     @Test
-    void updateBookingStatus() {
+    void ShouldUpdateBookingStatus() {
         BookingOutputDto createdBooking = bookingService.create(bookingInputDto, userId);
         BookingOutputDto updatedBooking = bookingService.updateBookingStatus(createdBooking.getId(), userId, true);
         assertEquals(Status.APPROVED, updatedBooking.getStatus());
     }
 
     @Test
-    void getAllUsersBookings() {
+    void ShouldGetAllUsersBookings() {
         bookingService.create(bookingInputDto, userId);
         List<BookingOutputDto> bookings = bookingService.getAllUsersBookings(userId, ItemStatus.ALL);
         assertFalse(bookings.isEmpty());
@@ -115,7 +115,7 @@ public class BookingServiceTests {
     }
 
     @Test
-    void getAllOwnersBookings() {
+    void ShouldGetAllOwnersBookings() {
         User user2 = new User();
         user2.setName("Test User2");
         user2.setEmail("test2@test.com");

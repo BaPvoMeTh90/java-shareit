@@ -43,7 +43,7 @@ public class UserControllerTests {
     @MockBean
     private UserService userService;
 
-    private UserInputDto userInputDto ;
+    private UserInputDto userInputDto;
     private UserOutputDto userOutputDto;
     private UserOutputDto secondUserOutputDto;
     private final Long userId = 1L;
@@ -64,7 +64,7 @@ public class UserControllerTests {
     }
 
     @Test
-    void findAllUsers()throws Exception {
+    void ShouldFindAllUsers()throws Exception {
         when(userService.findAll()).thenReturn(List.of(userOutputDto, secondUserOutputDto));
         mockMvc.perform(get("/users")
                         .characterEncoding(StandardCharsets.UTF_8)
@@ -82,7 +82,7 @@ public class UserControllerTests {
     }
 
     @Test
-    void findUserById()throws Exception {
+    void ShouldFindUserById()throws Exception {
         when(userService.findById(anyLong())).thenReturn(userOutputDto);
         mockMvc.perform(get("/users/" + userId)
                         .characterEncoding(StandardCharsets.UTF_8)
@@ -96,7 +96,7 @@ public class UserControllerTests {
     }
 
     @Test
-    void saveUser() throws Exception {
+    void ShouldSaveUser() throws Exception {
         when(userService.save(any(UserInputDto.class))).thenReturn(userOutputDto);
         mockMvc.perform(post("/users")
                         .content(objectMapper.writeValueAsString(userInputDto))
@@ -110,7 +110,7 @@ public class UserControllerTests {
     }
 
     @Test
-    void updateUser() throws Exception {
+    void ShouldUpdateUser() throws Exception {
         when(userService.update(anyLong(), any(UserInputDto.class))).thenReturn(userOutputDto);
 
         mockMvc.perform(patch("/users/" + userId)
@@ -126,7 +126,7 @@ public class UserControllerTests {
     }
 
     @Test
-    void deleteById() throws Exception {
+    void ShouldDeleteById() throws Exception {
         mockMvc.perform(delete("/users/" + userId)
                         .characterEncoding(StandardCharsets.UTF_8)
                         .contentType(MediaType.APPLICATION_JSON)

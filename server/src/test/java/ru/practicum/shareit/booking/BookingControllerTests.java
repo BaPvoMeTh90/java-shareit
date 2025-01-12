@@ -73,7 +73,7 @@ public class BookingControllerTests {
     private static final Random RANDOM = new Random();
 
     @BeforeEach
-    void BeforeEach() {
+    void beforeEach() {
         List<ItemOutputDto> itemOutputDtoList = new ArrayList<>();
         for (long i = 1; i <= COUNTER; i++) {
             ItemOutputDto itemToList = new ItemOutputDto();
@@ -146,7 +146,7 @@ public class BookingControllerTests {
     }
 
     @Test
-    void create() throws Exception {
+    void ShouldCreateBooking() throws Exception {
         when(bookingService.create(any(), anyLong()))
                 .thenReturn(bookingOutputDto);
 
@@ -173,7 +173,7 @@ public class BookingControllerTests {
     }
 
     @Test
-    void updateBookingStatus() throws Exception {
+    void ShouldUpdateBookingStatus() throws Exception {
         bookingOutputDto.setStatus(Status.APPROVED);
 
         when(bookingService.updateBookingStatus(anyLong(), anyLong(), anyBoolean()))
@@ -192,7 +192,7 @@ public class BookingControllerTests {
     }
 
     @Test
-    void getBookingById() throws Exception{
+    void ShouldGetBookingById() throws Exception {
         when(bookingService.getById(anyLong(), anyLong()))
                 .thenReturn(bookingOutputDto);
 
@@ -208,7 +208,7 @@ public class BookingControllerTests {
     }
 
     @Test
-    void getAllUsersBookings() throws Exception {
+    void ShouldGetAllUsersBookings() throws Exception {
         when(bookingService.getAllUsersBookings(anyLong(), any()))
                 .thenReturn(bookingOutputDtoList);
 
@@ -224,7 +224,7 @@ public class BookingControllerTests {
     }
 
     @Test
-    void getAllOwnersBookings() throws Exception {
+    void ShouldGetAllOwnersBookings() throws Exception {
         when(bookingService.getAllOwnersBookings(anyLong(), any()))
                 .thenReturn(bookingOutputDtoList);
 

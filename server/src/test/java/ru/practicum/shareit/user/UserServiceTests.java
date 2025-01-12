@@ -1,6 +1,7 @@
 package ru.practicum.shareit.user;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @Transactional
+@DisplayName(value = "UserService tests")
 public class UserServiceTests {
 
     @Autowired
@@ -36,7 +38,7 @@ public class UserServiceTests {
     private Long userId;
 
     @BeforeEach
-    void BeforeEach() {
+    void beforeEach() {
         userInputDto = new UserInputDto();
         userInputDto.setName("test Name");
         userInputDto.setEmail("test@test.com");
@@ -52,7 +54,8 @@ public class UserServiceTests {
     }
 
     @Test
-    void findAll() {
+    @DisplayName(value = "shouldFindAllUserOutputDto")
+    void shouldFindAllUserOutputDto() {
         List<UserOutputDto> users = userService.findAll();
         assertFalse(users.isEmpty());
         assertEquals(2, users.size());
@@ -65,7 +68,8 @@ public class UserServiceTests {
     }
 
     @Test
-    void findById() {
+    @DisplayName(value = "shouldFindById")
+    void shouldFindById() {
         UserOutputDto user = userService.findById(userId);
         assertNotNull(user);
         assertEquals(userOutputDto.getId(), user.getId());
@@ -74,7 +78,8 @@ public class UserServiceTests {
     }
 
     @Test
-    void save() {
+    @DisplayName(value = "shouldSaveUser")
+    void shouldSaveUser() {
         UserInputDto newUserInputDto = new UserInputDto();
         newUserInputDto.setName("New User");
         newUserInputDto.setEmail("save@save.com");
@@ -86,7 +91,8 @@ public class UserServiceTests {
     }
 
     @Test
-    void update() {
+    @DisplayName(value = "shouldUpdateUser")
+    void shouldUpdateUser() {
         UserInputDto updatedUserInputDto = new UserInputDto();
         updatedUserInputDto.setName("Updated Name");
         updatedUserInputDto.setEmail("updated@updated.com");
@@ -98,7 +104,8 @@ public class UserServiceTests {
     }
 
     @Test
-    void deleteById() {
+    @DisplayName(value = "shouldDeleteUser")
+    void shouldDeleteById() {
         userService.deleteById(userId);
         assertThrows(NotFoundException.class, () -> userService.findById(userId));
     }

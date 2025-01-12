@@ -37,7 +37,7 @@ public class ItemRequestServiceTests {
     private Long requestId;
 
     @BeforeEach
-    void BeforeEach() {
+    void beforeEach() {
         User user = new User();
         user.setName("Test User");
         user.setEmail("test@test.com");
@@ -52,7 +52,7 @@ public class ItemRequestServiceTests {
     }
 
     @Test
-    void create() {
+    void ShouldCreateItemRequest() {
         ItemRequestInputDto newItemRequestInputDto = new ItemRequestInputDto();
         newItemRequestInputDto.setDescription("New Test Request");
 
@@ -62,7 +62,7 @@ public class ItemRequestServiceTests {
     }
 
     @Test
-    void getAll() {
+    void ShouldGetAll() {
         List<ItemRequestOutputDto> requests = itemRequestService.getAll();
         assertFalse(requests.isEmpty());
         assertEquals(1, requests.size());
@@ -70,7 +70,7 @@ public class ItemRequestServiceTests {
     }
 
     @Test
-    void getAllUsersItemRequests() {
+    void ShouldGetAllUsersItemRequests() {
         List<ItemRequestOutputDto> requests = itemRequestService.getAllUsersItemRequests(userId);
         assertFalse(requests.isEmpty());
         assertEquals(1, requests.size());
@@ -78,7 +78,7 @@ public class ItemRequestServiceTests {
     }
 
     @Test
-    void getDetailedItemRequest() {
+    void ShouldGetDetailedItemRequest() {
         ItemRequestOutputDto request = itemRequestService.getDetailedItemRequest(requestId);
         assertNotNull(request);
         assertEquals(itemRequestOutputDto.getId(), request.getId());

@@ -44,7 +44,7 @@ public class ItemRequestControllerTests {
     private ItemRequestOutputDto itemRequestOutputDto;
 
     @BeforeEach
-    void BeforeEach() {
+    void beforeEach() {
         itemRequestInputDto = new ItemRequestInputDto();
         itemRequestInputDto.setDescription("Test Request");
 
@@ -54,7 +54,7 @@ public class ItemRequestControllerTests {
     }
 
     @Test
-    void create() throws Exception {
+    void ShouldCreateItemRequest() throws Exception {
         when(itemRequestService.create(any(ItemRequestInputDto.class), anyLong())).thenReturn(itemRequestOutputDto);
 
         mockMvc.perform(post("/requests")
@@ -70,7 +70,7 @@ public class ItemRequestControllerTests {
     }
 
     @Test
-    void getAll() throws Exception {
+    void ShouldGetAll() throws Exception {
         when(itemRequestService.getAll()).thenReturn(List.of(itemRequestOutputDto));
 
         mockMvc.perform(get("/requests/all")
@@ -86,7 +86,7 @@ public class ItemRequestControllerTests {
     }
 
     @Test
-    void getAllUsersItemRequests() throws Exception {
+    void ShouldGetAllUsersItemRequests() throws Exception {
         when(itemRequestService.getAllUsersItemRequests(anyLong())).thenReturn(List.of(itemRequestOutputDto));
 
         mockMvc.perform(get("/requests")
@@ -102,7 +102,7 @@ public class ItemRequestControllerTests {
     }
 
     @Test
-    void getDetailedItemRequest() throws Exception {
+    void ShouldGetDetailedItemRequest() throws Exception {
         when(itemRequestService.getDetailedItemRequest(anyLong())).thenReturn(itemRequestOutputDto);
 
         mockMvc.perform(get("/requests/" + 1L)
