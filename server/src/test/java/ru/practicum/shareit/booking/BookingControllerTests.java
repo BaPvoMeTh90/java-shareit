@@ -22,6 +22,7 @@ import ru.practicum.shareit.user.model.User;
 
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
+import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
@@ -66,6 +67,7 @@ public class BookingControllerTests {
 
     private BookingInputDto bookingInputDto;
     private BookingOutputDto bookingOutputDto;
+    private BookingOutputDto theBookingOutputDto;
     private List<BookingOutputDto> bookingOutputDtoList;
     private final Long id = 1L;
 
@@ -119,30 +121,30 @@ public class BookingControllerTests {
         for (long i = 1; i <= COUNTER; i++) {
             bookingOutputDto = new BookingOutputDto();
             bookingOutputDto.setId(i);
-            bookingOutputDto.setStart(LocalDateTime.now().plusMinutes(1));
-            bookingOutputDto.setEnd(LocalDateTime.now().plusDays(1));
+            bookingOutputDto.setStart(LocalDateTime.of(2025,1, 12, 10, 10, 10).plusMinutes(i));
+            bookingOutputDto.setEnd(LocalDateTime.of(2025,1, 12, 10, 10, 10).plusMinutes(i).plusDays(1));
             bookingOutputDto.setItem(itemOutputDto);
             bookingOutputDto.setBooker(userOutputDto);
             bookingOutputDto.setStatus(Status.WAITING);
             bookingOutputDtoList.add(bookingOutputDto);
         }
 
-        bookingOutputDto = bookingOutputDtoList.getFirst();
+        theBookingOutputDto = bookingOutputDtoList.getFirst();
 
         Booking booking = new Booking();
-        booking.setId(bookingOutputDto.getId());
-        booking.setStart(bookingOutputDto.getStart());
-        booking.setEnd(bookingOutputDto.getEnd());
+        booking.setId(theBookingOutputDto.getId());
+        booking.setStart(theBookingOutputDto.getStart());
+        booking.setEnd(theBookingOutputDto.getEnd());
         booking.setItem(item);
         booking.setBooker(user);
-        booking.setStatus(bookingOutputDto.getStatus());
+        booking.setStatus(theBookingOutputDto.getStatus());
 
         bookingInputDto = new BookingInputDto();
-        bookingInputDto.setStart(bookingOutputDto.getStart());
-        bookingInputDto.setEnd(bookingOutputDto.getEnd());
-        bookingInputDto.setItemId(bookingOutputDto.getItem().getId());
-        bookingInputDto.setBookerId(bookingOutputDto.getBooker().getId());
-        bookingInputDto.setStatus(bookingOutputDto.getStatus());
+        bookingInputDto.setStart(theBookingOutputDto.getStart());
+        bookingInputDto.setEnd(theBookingOutputDto.getEnd());
+        bookingInputDto.setItemId(theBookingOutputDto.getItem().getId());
+        bookingInputDto.setBookerId(theBookingOutputDto.getBooker().getId());
+        bookingInputDto.setStatus(theBookingOutputDto.getStatus());
     }
 
     @Test
@@ -177,16 +179,16 @@ public class BookingControllerTests {
         bookingOutputDto.setStatus(Status.APPROVED);
 
         when(bookingService.updateBookingStatus(anyLong(), anyLong(), anyBoolean()))
-                .thenReturn(bookingOutputDto);
+                .thenReturn(theBookingOutputDto);
 
-        mvc.perform(patch("/bookings/" + bookingOutputDto.getId())
+        mvc.perform(patch("/bookings/" + theBookingOutputDto.getId())
                         .accept(MediaType.APPLICATION_JSON)
                         .param("approved", "true")
-                        .header("X-Sharer-User-Id", bookingOutputDto.getBooker().getId()))
+                        .header("X-Sharer-User-Id", theBookingOutputDto.getBooker().getId()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.id", is(bookingOutputDto.getId()), Long.class))
-                .andExpect(jsonPath("$.status", is(bookingOutputDto.getStatus().name())));
+                .andExpect(jsonPath("$.id", is(theBookingOutputDto.getId()), Long.class))
+                .andExpect(jsonPath("$.status", is(theBookingOutputDto.getStatus().name())));
 
         verify(bookingService, times(1)).updateBookingStatus(eq(id), eq(id), eq(true));
     }
