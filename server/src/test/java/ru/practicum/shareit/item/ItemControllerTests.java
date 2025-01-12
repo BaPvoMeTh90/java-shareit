@@ -86,7 +86,7 @@ public class ItemControllerTests {
     }
 
     @Test
-    void ShouldGetAllUserItems() throws Exception {
+    void shouldGetAllUserItems() throws Exception {
         when(itemService.getAllUserItems(anyLong())).thenReturn(List.of(itemOutputDto, secondItemOutputDto));
         mockMvc.perform(get("/items")
                         .characterEncoding(StandardCharsets.UTF_8)
@@ -107,7 +107,7 @@ public class ItemControllerTests {
     }
 
     @Test
-    void ShouldGetById() throws Exception {
+    void shouldGetById() throws Exception {
         when(itemService.getById(anyLong())).thenReturn(itemOutputDto);
         mockMvc.perform(get("/items/" + Id)
                         .characterEncoding(StandardCharsets.UTF_8)
@@ -123,7 +123,7 @@ public class ItemControllerTests {
     }
 
     @Test
-    void ShouldSearchByParam() throws Exception {
+    void shouldSearchByParam() throws Exception {
         when(itemService.searchByParam(anyString())).thenReturn(List.of(secondItemOutputDto));
 
         mockMvc.perform(get("/items/search")
@@ -142,7 +142,7 @@ public class ItemControllerTests {
     }
 
     @Test
-    void ShouldCreateItem() throws Exception {
+    void shouldCreateItem() throws Exception {
         when(itemService.create(anyLong(), any(ItemInputDto.class))).thenReturn(itemOutputDto);
 
         mockMvc.perform(post("/items")
@@ -160,7 +160,7 @@ public class ItemControllerTests {
     }
 
     @Test
-    void ShouldUpdateItem()throws Exception {
+    void shouldUpdateItem()throws Exception {
         when(itemService.update(anyLong(), anyLong(), any(ItemInputDto.class))).thenReturn(itemOutputDto);
         mockMvc.perform(patch("/items/" + Id)
                         .content(objectMapper.writeValueAsString(itemInputDto))
@@ -177,7 +177,7 @@ public class ItemControllerTests {
     }
 
     @Test
-    void ShouldDeleteById() throws Exception {
+    void shouldDeleteById() throws Exception {
         mockMvc.perform(delete("/items/" + Id)
                 .characterEncoding(StandardCharsets.UTF_8)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -187,7 +187,7 @@ public class ItemControllerTests {
     }
 
     @Test
-    void ShouldCreateComment() throws Exception {
+    void shouldCreateComment() throws Exception {
         when(itemService.createComment(anyLong(), anyLong(), any(CommentInputDto.class))).thenReturn(commentOutputDto);
         mockMvc.perform(post("/items/" + Id + "/comment")
                         .content(objectMapper.writeValueAsString(commentInputDto))

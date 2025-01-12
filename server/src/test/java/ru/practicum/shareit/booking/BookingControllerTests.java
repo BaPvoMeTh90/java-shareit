@@ -146,7 +146,7 @@ public class BookingControllerTests {
     }
 
     @Test
-    void ShouldCreateBooking() throws Exception {
+    void shouldCreateBooking() throws Exception {
         when(bookingService.create(any(), anyLong()))
                 .thenReturn(bookingOutputDto);
 
@@ -173,7 +173,7 @@ public class BookingControllerTests {
     }
 
     @Test
-    void ShouldUpdateBookingStatus() throws Exception {
+    void shouldUpdateBookingStatus() throws Exception {
         bookingOutputDto.setStatus(Status.APPROVED);
 
         when(bookingService.updateBookingStatus(anyLong(), anyLong(), anyBoolean()))
@@ -192,7 +192,7 @@ public class BookingControllerTests {
     }
 
     @Test
-    void ShouldGetBookingById() throws Exception {
+    void shouldGetBookingById() throws Exception {
         when(bookingService.getById(anyLong(), anyLong()))
                 .thenReturn(bookingOutputDto);
 
@@ -208,7 +208,7 @@ public class BookingControllerTests {
     }
 
     @Test
-    void ShouldGetAllUsersBookings() throws Exception {
+    void shouldGetAllUsersBookings() throws Exception {
         when(bookingService.getAllUsersBookings(anyLong(), any()))
                 .thenReturn(bookingOutputDtoList);
 
@@ -224,7 +224,7 @@ public class BookingControllerTests {
     }
 
     @Test
-    void ShouldGetAllOwnersBookings() throws Exception {
+    void shouldGetAllOwnersBookings() throws Exception {
         when(bookingService.getAllOwnersBookings(anyLong(), any()))
                 .thenReturn(bookingOutputDtoList);
 

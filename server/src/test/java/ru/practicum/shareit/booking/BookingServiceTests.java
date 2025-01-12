@@ -82,7 +82,7 @@ public class BookingServiceTests {
 
 
     @Test
-    void ShouldGetById() {
+    void shouldGetById() {
         BookingOutputDto createdBooking = bookingService.create(bookingInputDto, userId);
         BookingOutputDto repositoryBooking = bookingService.getById(createdBooking.getId(), userId);
         assertNotNull(repositoryBooking);
@@ -90,7 +90,7 @@ public class BookingServiceTests {
     }
 
     @Test
-    void ShouldCreateBooking() {
+    void shouldCreateBooking() {
         BookingOutputDto createdBooking = bookingService.create(bookingInputDto, userId);
         assertNotNull(createdBooking);
         assertEquals(bookingInputDto.getStart(), createdBooking.getStart());
@@ -100,14 +100,14 @@ public class BookingServiceTests {
     }
 
     @Test
-    void ShouldUpdateBookingStatus() {
+    void shouldUpdateBookingStatus() {
         BookingOutputDto createdBooking = bookingService.create(bookingInputDto, userId);
         BookingOutputDto updatedBooking = bookingService.updateBookingStatus(createdBooking.getId(), userId, true);
         assertEquals(Status.APPROVED, updatedBooking.getStatus());
     }
 
     @Test
-    void ShouldGetAllUsersBookings() {
+    void shouldGetAllUsersBookings() {
         bookingService.create(bookingInputDto, userId);
         List<BookingOutputDto> bookings = bookingService.getAllUsersBookings(userId, ItemStatus.ALL);
         assertFalse(bookings.isEmpty());
@@ -115,7 +115,7 @@ public class BookingServiceTests {
     }
 
     @Test
-    void ShouldGetAllOwnersBookings() {
+    void shouldGetAllOwnersBookings() {
         User user2 = new User();
         user2.setName("Test User2");
         user2.setEmail("test2@test.com");

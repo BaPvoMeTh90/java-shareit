@@ -52,7 +52,7 @@ public class ItemRequestServiceTests {
     }
 
     @Test
-    void ShouldCreateItemRequest() {
+    void shouldCreateItemRequest() {
         ItemRequestInputDto newItemRequestInputDto = new ItemRequestInputDto();
         newItemRequestInputDto.setDescription("New Test Request");
 
@@ -62,7 +62,7 @@ public class ItemRequestServiceTests {
     }
 
     @Test
-    void ShouldGetAll() {
+    void shouldGetAll() {
         List<ItemRequestOutputDto> requests = itemRequestService.getAll();
         assertFalse(requests.isEmpty());
         assertEquals(1, requests.size());
@@ -70,7 +70,7 @@ public class ItemRequestServiceTests {
     }
 
     @Test
-    void ShouldGetAllUsersItemRequests() {
+    void shouldGetAllUsersItemRequests() {
         List<ItemRequestOutputDto> requests = itemRequestService.getAllUsersItemRequests(userId);
         assertFalse(requests.isEmpty());
         assertEquals(1, requests.size());
@@ -78,7 +78,7 @@ public class ItemRequestServiceTests {
     }
 
     @Test
-    void ShouldGetDetailedItemRequest() {
+    void shouldGetDetailedItemRequest() {
         ItemRequestOutputDto request = itemRequestService.getDetailedItemRequest(requestId);
         assertNotNull(request);
         assertEquals(itemRequestOutputDto.getId(), request.getId());

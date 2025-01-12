@@ -64,7 +64,7 @@ public class UserControllerTests {
     }
 
     @Test
-    void ShouldFindAllUsers()throws Exception {
+    void shouldFindAllUsers()throws Exception {
         when(userService.findAll()).thenReturn(List.of(userOutputDto, secondUserOutputDto));
         mockMvc.perform(get("/users")
                         .characterEncoding(StandardCharsets.UTF_8)
@@ -82,7 +82,7 @@ public class UserControllerTests {
     }
 
     @Test
-    void ShouldFindUserById()throws Exception {
+    void shouldFindUserById()throws Exception {
         when(userService.findById(anyLong())).thenReturn(userOutputDto);
         mockMvc.perform(get("/users/" + userId)
                         .characterEncoding(StandardCharsets.UTF_8)
@@ -96,7 +96,7 @@ public class UserControllerTests {
     }
 
     @Test
-    void ShouldSaveUser() throws Exception {
+    void shouldSaveUser() throws Exception {
         when(userService.save(any(UserInputDto.class))).thenReturn(userOutputDto);
         mockMvc.perform(post("/users")
                         .content(objectMapper.writeValueAsString(userInputDto))
@@ -110,7 +110,7 @@ public class UserControllerTests {
     }
 
     @Test
-    void ShouldUpdateUser() throws Exception {
+    void shouldUpdateUser() throws Exception {
         when(userService.update(anyLong(), any(UserInputDto.class))).thenReturn(userOutputDto);
 
         mockMvc.perform(patch("/users/" + userId)
@@ -126,7 +126,7 @@ public class UserControllerTests {
     }
 
     @Test
-    void ShouldDeleteById() throws Exception {
+    void shouldDeleteById() throws Exception {
         mockMvc.perform(delete("/users/" + userId)
                         .characterEncoding(StandardCharsets.UTF_8)
                         .contentType(MediaType.APPLICATION_JSON)

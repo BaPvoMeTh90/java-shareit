@@ -54,7 +54,7 @@ public class ItemRequestControllerTests {
     }
 
     @Test
-    void ShouldCreateItemRequest() throws Exception {
+    void shouldCreateItemRequest() throws Exception {
         when(itemRequestService.create(any(ItemRequestInputDto.class), anyLong())).thenReturn(itemRequestOutputDto);
 
         mockMvc.perform(post("/requests")
@@ -70,7 +70,7 @@ public class ItemRequestControllerTests {
     }
 
     @Test
-    void ShouldGetAll() throws Exception {
+    void shouldGetAll() throws Exception {
         when(itemRequestService.getAll()).thenReturn(List.of(itemRequestOutputDto));
 
         mockMvc.perform(get("/requests/all")
@@ -86,7 +86,7 @@ public class ItemRequestControllerTests {
     }
 
     @Test
-    void ShouldGetAllUsersItemRequests() throws Exception {
+    void shouldGetAllUsersItemRequests() throws Exception {
         when(itemRequestService.getAllUsersItemRequests(anyLong())).thenReturn(List.of(itemRequestOutputDto));
 
         mockMvc.perform(get("/requests")
@@ -102,7 +102,7 @@ public class ItemRequestControllerTests {
     }
 
     @Test
-    void ShouldGetDetailedItemRequest() throws Exception {
+    void shouldGetDetailedItemRequest() throws Exception {
         when(itemRequestService.getDetailedItemRequest(anyLong())).thenReturn(itemRequestOutputDto);
 
         mockMvc.perform(get("/requests/" + 1L)

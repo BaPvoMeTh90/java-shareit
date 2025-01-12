@@ -94,7 +94,7 @@ public class ItemServiceTests {
     }
 
     @Test
-    void ShouldGetAllUserItems() {
+    void shouldGetAllUserItems() {
         List<ItemOutputDto> items = itemService.getAllUserItems(userId);
         assertFalse(items.isEmpty());
         assertEquals(1, items.size());
@@ -102,7 +102,7 @@ public class ItemServiceTests {
     }
 
     @Test
-    void ShouldGetById() {
+    void shouldGetById() {
         ItemOutputDto item = itemService.getById(itemId);
         assertNotNull(item);
         assertEquals(itemOutputDto.getId(), item.getId());
@@ -112,7 +112,7 @@ public class ItemServiceTests {
     }
 
     @Test
-    void ShouldSearchByParam() {
+    void shouldSearchByParam() {
         List<ItemOutputDto> items = itemService.searchByParam("Text");
         assertFalse(items.isEmpty());
         assertEquals(1, items.size());
@@ -120,7 +120,7 @@ public class ItemServiceTests {
     }
 
     @Test
-    void ShouldCreateItem() {
+    void shouldCreateItem() {
         ItemOutputDto itemOutputDto = itemService.create(userId, itemInputDto);
         assertNotNull(itemOutputDto);
         assertEquals(itemInputDto.getName(), itemOutputDto.getName());
@@ -129,7 +129,7 @@ public class ItemServiceTests {
     }
 
     @Test
-    void ShouldUpdateItem() {
+    void shouldUpdateItem() {
         ItemInputDto updatedItemInputDto = new ItemInputDto();
         updatedItemInputDto.setName("Updated Name");
         updatedItemInputDto.setDescription("Updated Description");
@@ -142,13 +142,13 @@ public class ItemServiceTests {
     }
 
     @Test
-    void ShouldDeleteById() {
+    void shouldDeleteById() {
         itemService.deleteById(userId, itemId);
         assertThrows(NotFoundException.class, () -> itemService.getById(itemId));
     }
 
     @Test
-    void ShouldCreateComment() {
+    void shouldCreateComment() {
         CommentOutputDto comment = itemService.createComment(userId, itemId, commentInputDto);
         assertNotNull(comment);
         assertEquals(commentInputDto.getText(), comment.getText());
