@@ -51,7 +51,7 @@ public class ItemControllerTests {
     private ItemOutputDto secondItemOutputDto;
     private CommentInputDto commentInputDto;
     private CommentOutputDto commentOutputDto;
-    private Long Id = 1L;
+    private final Long id = 1L;
 
     @BeforeEach
     void beforeEach() {
@@ -66,7 +66,7 @@ public class ItemControllerTests {
         secondItemInputDto.setAvailable(true);
 
         itemOutputDto = new ItemOutputDto();
-        itemOutputDto.setId(Id);
+        itemOutputDto.setId(id);
         itemOutputDto.setName(itemInputDto.getName());
         itemOutputDto.setDescription(itemInputDto.getDescription());
         itemOutputDto.setAvailable(itemInputDto.getAvailable());
@@ -81,7 +81,7 @@ public class ItemControllerTests {
         commentInputDto.setText("Test Comment To Item");
 
         commentOutputDto = new CommentOutputDto();
-        commentOutputDto.setId(Id);
+        commentOutputDto.setId(id);
         commentOutputDto.setText(commentInputDto.getText());
     }
 
@@ -92,7 +92,7 @@ public class ItemControllerTests {
                         .characterEncoding(StandardCharsets.UTF_8)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .header("X-Sharer-User-Id", Id))
+                        .header("X-Sharer-User-Id", id))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$", hasSize(2)))
@@ -109,11 +109,11 @@ public class ItemControllerTests {
     @Test
     void shouldGetById() throws Exception {
         when(itemService.getById(anyLong())).thenReturn(itemOutputDto);
-        mockMvc.perform(get("/items/" + Id)
+        mockMvc.perform(get("/items/" + id)
                         .characterEncoding(StandardCharsets.UTF_8)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .header("X-Sharer-User-Id", Id))
+                        .header("X-Sharer-User-Id", id))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.id", is(itemOutputDto.getId().intValue())))
@@ -131,7 +131,7 @@ public class ItemControllerTests {
                         .characterEncoding(StandardCharsets.UTF_8)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .header("X-Sharer-User-Id", Id))
+                        .header("X-Sharer-User-Id", id))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$", hasSize(1)))
@@ -150,7 +150,7 @@ public class ItemControllerTests {
                         .characterEncoding(StandardCharsets.UTF_8)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .header("X-Sharer-User-Id", Id))
+                        .header("X-Sharer-User-Id", id))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.id", is(itemOutputDto.getId().intValue())))
@@ -162,12 +162,12 @@ public class ItemControllerTests {
     @Test
     void shouldUpdateItem()throws Exception {
         when(itemService.update(anyLong(), anyLong(), any(ItemInputDto.class))).thenReturn(itemOutputDto);
-        mockMvc.perform(patch("/items/" + Id)
+        mockMvc.perform(patch("/items/" + id)
                         .content(objectMapper.writeValueAsString(itemInputDto))
                         .characterEncoding(StandardCharsets.UTF_8)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .header("X-Sharer-User-Id", Id))
+                        .header("X-Sharer-User-Id", id))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.id", is(itemOutputDto.getId().intValue())))
@@ -178,23 +178,23 @@ public class ItemControllerTests {
 
     @Test
     void shouldDeleteById() throws Exception {
-        mockMvc.perform(delete("/items/" + Id)
+        mockMvc.perform(delete("/items/" + id)
                 .characterEncoding(StandardCharsets.UTF_8)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
-                .header("X-Sharer-User-Id", Id))
+                .header("X-Sharer-User-Id", id))
                 .andExpect(status().isOk());
     }
 
     @Test
     void shouldCreateComment() throws Exception {
         when(itemService.createComment(anyLong(), anyLong(), any(CommentInputDto.class))).thenReturn(commentOutputDto);
-        mockMvc.perform(post("/items/" + Id + "/comment")
+        mockMvc.perform(post("/items/" + id + "/comment")
                         .content(objectMapper.writeValueAsString(commentInputDto))
                         .characterEncoding(StandardCharsets.UTF_8)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .header("X-Sharer-User-Id", Id))
+                        .header("X-Sharer-User-Id", id))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.id", is(commentOutputDto.getId().intValue())))
