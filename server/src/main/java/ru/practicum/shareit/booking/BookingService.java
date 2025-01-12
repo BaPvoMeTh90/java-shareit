@@ -14,8 +14,12 @@ import ru.practicum.shareit.exception.DataConflict;
 import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.exception.ValidationException;
 import ru.practicum.shareit.item.ItemRepository;
+import ru.practicum.shareit.item.dto.ItemMapper;
+import ru.practicum.shareit.item.dto.ItemOutputDto;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.UserRepository;
+import ru.practicum.shareit.user.dto.UserMapper;
+import ru.practicum.shareit.user.dto.UserOutputDto;
 import ru.practicum.shareit.user.model.User;
 
 import java.time.LocalDateTime;
@@ -34,7 +38,9 @@ public class BookingService {
         var booking = bookingRepository.findById(bookingId)
                 .orElseThrow(() -> new NotFoundException("Букинга с id = " + bookingId + " не существует"));
         validateRelationForBooking(booking, userId);
-        return BookingMapper.toBookingOutputDto(booking);
+        ItemOutputDto item = ItemMapper.toItemOutputDto(booking.getItem());
+        UserOutputDto user = UserMapper.toUserOutputDto(booking.getBooker());
+        return BookingMapper.toBookingOutputDto(booking, item, user);
     }
 
     @Transactional
@@ -45,7 +51,8 @@ public class BookingService {
             throw new ValidationException("Вещь с id = " + item.getId() + " не доступна к бронированию");
         }
         Booking booking = BookingMapper.toBooking(bookingInputDto, user, item);
-        return BookingMapper.toBookingOutputDto(bookingRepository.save(booking));
+        return BookingMapper.toBookingOutputDto(bookingRepository.save(booking),
+                ItemMapper.toItemOutputDto(booking.getItem()), UserMapper.toUserOutputDto(booking.getBooker()));
     }
 
     @Transactional
@@ -57,7 +64,8 @@ public class BookingService {
         } else {
             booking.setStatus(Status.REJECTED);
         }
-        return BookingMapper.toBookingOutputDto(booking);
+        return BookingMapper.toBookingOutputDto(booking,
+                ItemMapper.toItemOutputDto(booking.getItem()), UserMapper.toUserOutputDto(booking.getBooker()));
     }
 
     public List<BookingOutputDto> getAllUsersBookings(Long userId, ItemStatus status) {
