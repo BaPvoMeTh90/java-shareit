@@ -41,8 +41,8 @@ class BookingOutputDtoTest {
 
         BookingOutputDto bookingOutputDto = new BookingOutputDto();
         bookingOutputDto.setId(1L);
-        bookingOutputDto.setStart(LocalDateTime.of(2025, 1, 14, 0, 26 ,20, 000000));
-        bookingOutputDto.setEnd(LocalDateTime.of(2025, 1, 14, 0, 26 ,20, 000000).plusHours(1));
+        bookingOutputDto.setStart(LocalDateTime.of(2025, 1, 14, 0, 26,20, 000000));
+        bookingOutputDto.setEnd(LocalDateTime.of(2025, 1, 14, 0, 26,20, 000000).plusHours(1));
         bookingOutputDto.setItem(itemOutputDto);
         bookingOutputDto.setBooker(userOutputDto);
         bookingOutputDto.setStatus(Status.APPROVED);

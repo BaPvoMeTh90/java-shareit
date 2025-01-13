@@ -43,7 +43,7 @@ class ItemRequestOutputDtoTest {
         itemRequestOutputDto.setId(1L);
         itemRequestOutputDto.setDescription("description");
         itemRequestOutputDto.setRequestor(1L);
-        itemRequestOutputDto.setCreated(LocalDateTime.of(2025, 1, 14, 1, 1 ,1));
+        itemRequestOutputDto.setCreated(LocalDateTime.of(2025, 1, 14, 1, 1, 1));
         itemRequestOutputDto.setItems(items);
 
         JsonContent<ItemRequestOutputDto> result = json.write(itemRequestOutputDto);
