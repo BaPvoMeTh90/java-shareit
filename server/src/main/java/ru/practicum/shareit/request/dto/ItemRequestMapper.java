@@ -7,7 +7,7 @@ import ru.practicum.shareit.request.model.ItemRequest;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ItemRequestMapper {
-    public static ItemRequest toItemRequest(ItemRequestInputDto itemRequestInputDto, Long requestor /*User requestor*/) {
+    public static ItemRequest toItemRequest(ItemRequestInputDto itemRequestInputDto, Long requestor) {
         ItemRequest itemRequest = new ItemRequest();
         itemRequest.setDescription(itemRequestInputDto.getDescription());
         itemRequest.setRequestor(requestor);
@@ -18,7 +18,7 @@ public class ItemRequestMapper {
         ItemRequestOutputDto itemRequestOutputDto = new ItemRequestOutputDto();
         itemRequestOutputDto.setId(itemRequest.getId());
         itemRequestOutputDto.setDescription(itemRequest.getDescription());
-        itemRequestOutputDto.setRequestor(itemRequest.getRequestor()/*UserMapper.toUserOutputDto(itemRequest.getRequestor())*/);
+        itemRequestOutputDto.setRequestor(itemRequest.getRequestor());
         itemRequestOutputDto.setCreated(itemRequest.getCreated());
         return itemRequestOutputDto;
     }

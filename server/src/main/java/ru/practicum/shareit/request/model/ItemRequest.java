@@ -12,7 +12,7 @@ import jakarta.validation.constraints.Positive;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -30,5 +30,5 @@ public class ItemRequest {
     private Long requestor;
     @Column(name = "CREATED")
     @NotNull
-    private Instant created = Instant.now();
+    private LocalDateTime created = LocalDateTime.now();
 }

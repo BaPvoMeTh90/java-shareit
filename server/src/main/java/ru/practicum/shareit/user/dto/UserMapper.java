@@ -17,14 +17,6 @@ public class UserMapper {
         return userOutputDto;
     }
 
-    public static List<UserOutputDto> toUserOutputDto(Iterable<User> users) {
-        List<UserOutputDto> result = new ArrayList<>();
-        for (User user : users) {
-            result.add(toUserOutputDto(user));
-        }
-        return result;
-    }
-
     public static User toUser(UserInputDto userInputDto) {
         User user = new User();
         user.setName(userInputDto.getName());
